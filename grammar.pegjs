@@ -1,35 +1,63 @@
 {
 
-function genericArithmeticOperation(operator) {
-    return function(s) {
-        if (s.length === 2) {
-            return {
-                type: 'BinaryExpression',
-                operator: operator,
-                left: s[0],
-                right: s[1]
-            };
-        }
+  function processCallExpression(s) {
+    var callee = first(s),
+        args = rest(s)
 
-        if (s.length === 1) {
-            return s[0];
-        }
+    args = map(function(s) {
+      if (s.expression && s.expression.type === 'CallExpression') {
+        return s.expression;
+      } else {
+        return s;
+      }
+    }, args);
 
-        return {
-            type: 'BinaryExpression',
-            operator: operator,
-            left: s[0],
-            right: genericArithmeticOperation(operator)(rest(s))
-        };
-    };
-}
+    return {
+      type: 'ExpressionStatement',
+      expression: {
+        type: 'CallExpression',
+        callee: callee,
+        'arguments': args
+      }
+    }
 
+  }
+
+  function genericArithmeticOperation(operator) {
+      return function(s) {
+          if (s.length === 2) {
+              return {
+                  type: 'BinaryExpression',
+                  operator: operator,
+                  left: first(s),
+                  right: first(rest(s))
+              };
+          }
+
+          if (s.length === 1) {
+              return first(s);
+          }
+
+          return {
+              type: 'BinaryExpression',
+              operator: operator,
+              left: first(s),
+              right: genericArithmeticOperation(operator)(rest(s))
+          };
+      };
+  }
 
   var builtins = {
     '+': genericArithmeticOperation('+'),
     '-': genericArithmeticOperation('-'),
     '*': genericArithmeticOperation('*'),
     '/': genericArithmeticOperation('/'),
+    'list': function(s) {
+      return {
+        type: 'ArrayExpression',
+        elements: s
+      }
+    },
     'cons': function(s) {
       return {
         type: 'ExpressionStatement',
@@ -44,7 +72,7 @@ function genericArithmeticOperation(operator) {
               name: 'concat'
             }
           },
-          'arguments': [s[0]]
+          'arguments': [first(s)]
         }
       }
     }
@@ -81,7 +109,7 @@ function genericArithmeticOperation(operator) {
   }
 
   function init(a) {
-    return a.slice(0, -1); 
+    return a.slice(0, -1);
   }
 
   function last(a) {
@@ -89,25 +117,22 @@ function genericArithmeticOperation(operator) {
   }
 
   function returnStatement(s) {
+    s = first(s);
     return [{
       type: 'ReturnStatement',
-      argument: s[0].expression ? s[0].expression : s[0]
+      argument: s.expression ? s.expression : s
     }];
   }
 
   var log = console.log;
 }
+
+
 program
-  = s:sexp+ "\n"*  { return { 
+  = s:sexp+ "\n"*  { return {
       type: 'Program',
-      body: [
-      s[0]
-      /* { */
-      /*   type: 'ExpressionStatement', */
-      /*   expression: s[0] */
-      /* } */
-      ]
-    }}
+      body: s
+    };}
 
 sexp
   = _ a:atom _ { return a; }
@@ -125,21 +150,19 @@ sourcechar
 list
   = "()" { return []; }
   /  _ "(" _ s:sexp+ _ ")" _ {
-    if (s[0].name === 'def') {
+    if (first(s).name === 'def') {
       return {
-            type: 'VariableDeclaration',
-            declarations: [
-                {
-                    type: 'VariableDeclarator',
-                    id: s[1],
-                    init: s[2]
-                }
-            ],
-            kind: 'var'
-      }
-    } 
-    
-    if (s[0].name === 'fn') {
+        type: 'VariableDeclaration',
+        declarations: [{
+          type: 'VariableDeclarator',
+          id: s[1],
+          init: s[2].expression? s[2].expression : s[2]
+        }],
+        kind: 'var'
+      };
+    }
+
+    if (first(s).name === 'fn') {
       return {
         type: 'FunctionExpression',
         id: null,
@@ -149,25 +172,19 @@ list
           body: init(rest(rest((s)))).concat(returnStatement(last(rest(s))))
         }
       };
-    } 
-
-    if (Object.keys(builtins).indexOf(s[0].name) > -1) {
-      return builtins[s[0].name](rest(s));
     }
 
-      return {
-        /* type: 'ExpressionStatement', */
-        /* expression: { */
-          type: 'CallExpression',
-          callee: s[0],
-          'arguments': s.slice(1)
-        /* } */
+    if (Object.keys(builtins).indexOf(first(s).name) > -1) {
+      return builtins[first(s).name](rest(s));
     }
+
+    return processCallExpression(s);
+
   }
 
 vector
   = "[]" { return []; }
   / _ "[" _ a:atom+ _ "]" _ { return {type: 'ArrayExpression', elements: a};}
 
- _
-  = [\n ]*
+_
+  = [\n, ]*
