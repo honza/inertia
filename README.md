@@ -15,6 +15,31 @@ The AST is then transformed to Javascript via [escodegen][3].
 
 It can optionally compress the output via Uglify.
 
+Example
+-------
+
+Source:
+
+```clojure
+(def name "honza")
+
+(def greet
+  (fn [name]
+    (console.log "hey" name)))
+
+(greet name)
+```
+
+Output:
+
+```js
+var name = 'honza';
+var greet = function (name) {
+    return console.log('hey', name);
+};
+greet(name);
+```
+
 Usage
 -----
 
