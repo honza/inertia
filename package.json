@@ -1,0 +1,12 @@
+{
+  "name": "inertia",
+  "version": "0.1.0",
+  "description": "",
+  "dependencies": {
+    "pegjs": "0.7.0",
+    "escodegen": "0.0.22"
+  },
+  "author": "Honza Pokorny",
+  "license": "BSD",
+
+}
