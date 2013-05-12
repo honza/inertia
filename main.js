@@ -1,22 +1,44 @@
 var parser = require('./grammar');
+var UglifyJS = require("uglify-js");
 var fs = require('fs');
-var _ = require('underscore');
 var es = require('escodegen');
 var util = require('util');
+var program = require('commander');
 
-var input = process.argv[2];
+program
+    .version('0.1.0')
+    .usage('[options] <file...>')
+    .option('-t, --ast', 'Print the AST')
+    .option('-o, --output [file]', 'Redirect output to file')
+    .option('-c, --compress', 'Minify with uglify')
+    .parse(process.argv);
+
+if (program.args.length === 0) {
+    console.log('Missing file.');
+    process.exit(1);
+}
+
+var input, ast, js;
+
+input = program.args[0];
 input = fs.readFileSync(input, 'utf8');
 
-var result = parser.parse(input);
+ast = parser.parse(input);
 
+if (program.ast) {
+    console.log(JSON.stringify(ast, null, 4));
+    process.exit(0);
+}
 
-console.log('\n\n ast \n\n');
-console.log(JSON.stringify(result, null, 4));
+js = es.generate(ast);
 
-console.log('\n\n js \n\n');
-var js = es.generate(result);
+if (program.compress) {
+    js = UglifyJS.minify(js, {fromString: true}).code;
+}
+
+if (program.output) {
+    fs.writeFileSync(program.output, js, 'utf8');
+    process.exit(0);
+}
 
 console.log(js);
-
-
-fs.writeFileSync('out.js', js);

@@ -4,9 +4,10 @@
   "description": "",
   "dependencies": {
     "pegjs": "0.7.0",
-    "escodegen": "0.0.22"
+    "escodegen": "0.0.22",
+    "commander": "1.1.1",
+    "uglify-js": "2.3.2"
   },
   "author": "Honza Pokorny",
-  "license": "BSD",
-
+  "license": "BSD"
 }
