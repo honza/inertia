@@ -1,5 +1,9 @@
 {
 
+  function objGet(obj, key) {
+    return obj[key];
+  }
+
   function partition(n, coll) {
       if (coll.length % n !== 0) {
           throw Error('Uneven number of elements.');
@@ -101,6 +105,18 @@
             }
           },
           'arguments': [first(s)]
+        }
+      }
+    },
+    'get': function(s) {
+      return {
+        type: 'MemberExpression',
+        computed: false,
+        object: first(s),
+        property: {
+          type: 'Identifier',
+          name: first(rest(s)).value
+
         }
       }
     }
