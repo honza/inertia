@@ -451,26 +451,26 @@ module.exports = (function(){
           if (result0 === null) {
             pos0 = pos;
             pos1 = pos;
-            if (/^[\-+\/*_<>=a-zA-Z.]/.test(input.charAt(pos))) {
+            if (/^[\-+\/*_<>=a-zA-Z.!]/.test(input.charAt(pos))) {
               result1 = input.charAt(pos);
               pos++;
             } else {
               result1 = null;
               if (reportFailures === 0) {
-                matchFailed("[\\-+\\/*_<>=a-zA-Z.]");
+                matchFailed("[\\-+\\/*_<>=a-zA-Z.!]");
               }
             }
             if (result1 !== null) {
               result0 = [];
               while (result1 !== null) {
                 result0.push(result1);
-                if (/^[\-+\/*_<>=a-zA-Z.]/.test(input.charAt(pos))) {
+                if (/^[\-+\/*_<>=a-zA-Z.!]/.test(input.charAt(pos))) {
                   result1 = input.charAt(pos);
                   pos++;
                 } else {
                   result1 = null;
                   if (reportFailures === 0) {
-                    matchFailed("[\\-+\\/*_<>=a-zA-Z.]");
+                    matchFailed("[\\-+\\/*_<>=a-zA-Z.!]");
                   }
                 }
               }
@@ -1083,10 +1083,48 @@ module.exports = (function(){
           '-': genericArithmeticOperation('-'),
           '*': genericArithmeticOperation('*'),
           '/': genericArithmeticOperation('/'),
+          '=': genericArithmeticOperation('==='),
+          '!=': genericArithmeticOperation('!=='),
+          '>': genericArithmeticOperation('>'),
+          '>=': genericArithmeticOperation('>='),
+          '<': genericArithmeticOperation('<'),
+          '<=': genericArithmeticOperation('<='),
           'list': function(s) {
             return {
               type: 'ArrayExpression',
               elements: s
+            }
+          },
+          'if': function(s) {
+            return {
+              type: 'CallExpression',
+              callee: {
+                type: 'FunctionExpression',
+                id: null,
+                params: [],
+                body: {
+                  type: 'BlockStatement',
+                  body: [{
+                    type: 'IfStatement',
+                    test: first(s).expression ? first(s).expression : first(s),
+                    consequent: {
+                      type: 'BlockStatement',
+                      body: [{
+                        type: 'ReturnStatement',
+                        argument: s[1].expression ? s[1].expression : s[1]
+                      }]
+                    },
+                    alternate: {
+                      type: 'BlockStatement',
+                      body: [{
+                        type: 'ReturnStatement',
+                        argument: s[2].expression ? s[2].expression : s[2]
+                      }]
+                    }
+                  }]
+                }
+              },
+              'arguments': []
             }
           }
         };

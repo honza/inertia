@@ -58,7 +58,8 @@ What works
 
 * `def`
 * `list`
-* `+`, `-`, `*`, `/`
+* `+`, `-`, `*`, `/`, `=`, `!=`, `<`, `>`, `<=`, `>=`
+* `if`
 * `(fn [] ...)`
 * `{}`, `{"name" "honza"}`
 
@@ -82,7 +83,6 @@ Standard library
 TODO
 ----
 
-* `if`, `==`
 * `let`
 * Macro support
 

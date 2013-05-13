@@ -80,10 +80,48 @@
     '-': genericArithmeticOperation('-'),
     '*': genericArithmeticOperation('*'),
     '/': genericArithmeticOperation('/'),
+    '=': genericArithmeticOperation('==='),
+    '!=': genericArithmeticOperation('!=='),
+    '>': genericArithmeticOperation('>'),
+    '>=': genericArithmeticOperation('>='),
+    '<': genericArithmeticOperation('<'),
+    '<=': genericArithmeticOperation('<='),
     'list': function(s) {
       return {
         type: 'ArrayExpression',
         elements: s
+      }
+    },
+    'if': function(s) {
+      return {
+        type: 'CallExpression',
+        callee: {
+          type: 'FunctionExpression',
+          id: null,
+          params: [],
+          body: {
+            type: 'BlockStatement',
+            body: [{
+              type: 'IfStatement',
+              test: first(s).expression ? first(s).expression : first(s),
+              consequent: {
+                type: 'BlockStatement',
+                body: [{
+                  type: 'ReturnStatement',
+                  argument: s[1].expression ? s[1].expression : s[1]
+                }]
+              },
+              alternate: {
+                type: 'BlockStatement',
+                body: [{
+                  type: 'ReturnStatement',
+                  argument: s[2].expression ? s[2].expression : s[2]
+                }]
+              }
+            }]
+          }
+        },
+        'arguments': []
       }
     }
   };
@@ -153,7 +191,7 @@ sexp
 atom
   = d:[0-9]+ _ { return {type: 'Literal', value: numberify(d)}; }
   / '"' d:(!'"' sourcechar)* '"' _ { return {type: 'Literal', value: makeStr(d) }}
-  / s:[-+/*_<>=a-zA-Z\.]+ _ { return {type: 'Identifier', name: s.join("")};}
+  / s:[-+/*_<>=a-zA-Z\.!]+ _ { return {type: 'Identifier', name: s.join("")};}
 
 sourcechar
   = .
