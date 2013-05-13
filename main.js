@@ -18,10 +18,12 @@ if (program.args.length === 0) {
     process.exit(1);
 }
 
-var input, ast, js;
+var input, ast, js, lib;
 
 input = program.args[0];
 input = fs.readFileSync(input, 'utf8');
+
+lib = fs.readFileSync('lib.js', 'utf8');
 
 ast = parser.parse(input);
 
@@ -30,7 +32,7 @@ if (program.ast) {
     process.exit(0);
 }
 
-js = es.generate(ast);
+js = lib + es.generate(ast);
 
 if (program.compress) {
     js = UglifyJS.minify(js, {fromString: true}).code;

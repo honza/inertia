@@ -58,17 +58,32 @@ What works
 
 * `def`
 * `list`
-*  `cons`
 * `+`, `-`, `*`, `/`
 * `(fn [] ...)`
 * `{}`, `{"name" "honza"}`
+
+Standard library
+----------------
+
+* nth
+* first
+* rest
+* second
+* last
+* partition
+* cons
+* conj
+* get
+* map
+* filter
+
+**Note**: The standard library functions are modelled after Clojure.
 
 TODO
 ----
 
 * `if`, `==`
 * `let`
-* `map`, `filter`, `first`, `rest`, etc.
 * Macro support
 
 License

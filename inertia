@@ -1003,10 +1003,6 @@ module.exports = (function(){
       
       
       
-        function objGet(obj, key) {
-          return obj[key];
-        }
-      
         function partition(n, coll) {
             if (coll.length % n !== 0) {
                 throw Error('Uneven number of elements.');
@@ -1091,36 +1087,6 @@ module.exports = (function(){
             return {
               type: 'ArrayExpression',
               elements: s
-            }
-          },
-          'cons': function(s) {
-            return {
-              type: 'ExpressionStatement',
-              expression: {
-                type: 'CallExpression',
-                callee: {
-                  type: 'MemberExpression',
-                  computed: false,
-                  object: s[1],
-                  property: {
-                    type: 'Identifier',
-                    name: 'concat'
-                  }
-                },
-                'arguments': [first(s)]
-              }
-            }
-          },
-          'get': function(s) {
-            return {
-              type: 'MemberExpression',
-              computed: false,
-              object: first(s),
-              property: {
-                type: 'Identifier',
-                name: first(rest(s)).value
-      
-              }
             }
           }
         };
@@ -1278,10 +1244,12 @@ if (program.args.length === 0) {
     process.exit(1);
 }
 
-var input, ast, js;
+var input, ast, js, lib;
 
 input = program.args[0];
 input = fs.readFileSync(input, 'utf8');
+
+lib = fs.readFileSync('lib.js', 'utf8');
 
 ast = parser.parse(input);
 
@@ -1290,7 +1258,7 @@ if (program.ast) {
     process.exit(0);
 }
 
-js = es.generate(ast);
+js = lib + es.generate(ast);
 
 if (program.compress) {
     js = UglifyJS.minify(js, {fromString: true}).code;

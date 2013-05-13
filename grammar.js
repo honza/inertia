@@ -1002,10 +1002,6 @@ module.exports = (function(){
       
       
       
-        function objGet(obj, key) {
-          return obj[key];
-        }
-      
         function partition(n, coll) {
             if (coll.length % n !== 0) {
                 throw Error('Uneven number of elements.');
@@ -1090,36 +1086,6 @@ module.exports = (function(){
             return {
               type: 'ArrayExpression',
               elements: s
-            }
-          },
-          'cons': function(s) {
-            return {
-              type: 'ExpressionStatement',
-              expression: {
-                type: 'CallExpression',
-                callee: {
-                  type: 'MemberExpression',
-                  computed: false,
-                  object: s[1],
-                  property: {
-                    type: 'Identifier',
-                    name: 'concat'
-                  }
-                },
-                'arguments': [first(s)]
-              }
-            }
-          },
-          'get': function(s) {
-            return {
-              type: 'MemberExpression',
-              computed: false,
-              object: first(s),
-              property: {
-                type: 'Identifier',
-                name: first(rest(s)).value
-      
-              }
             }
           }
         };
