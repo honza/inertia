@@ -61,11 +61,11 @@ What works
 *  `cons`
 * `+`, `-`, `*`, `/`
 * `(fn [] ...)`
+* `{}`, `{"name" "honza"}`
 
 TODO
 ----
 
-* Objects
 * `if`, `==`
 * `let`
 * `map`, `filter`, `first`, `rest`, etc.

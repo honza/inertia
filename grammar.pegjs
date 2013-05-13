@@ -1,5 +1,33 @@
 {
 
+  function partition(n, coll) {
+      if (coll.length % n !== 0) {
+          throw Error('Uneven number of elements.');
+      }
+
+      if (coll.length === 0) {
+          return [];
+      }
+      return [coll.slice(0, n)].concat(partition(n, coll.slice(n)));
+  }
+
+  function makeObject(arr) {
+    var pairs = partition(2, arr);
+    var properties = map(function(p) {
+      var k = p[0], v = p[1];
+      return {
+        key: k,
+        value: v
+      }
+    }, pairs);
+
+    return {
+        type: 'ObjectExpression',
+        properties: properties
+    }
+
+  }
+
   function processCallExpression(s) {
     var callee = first(s),
         args = rest(s)
@@ -138,6 +166,7 @@ sexp
   = _ a:atom _ { return a; }
   / _ l:list _ { return l; }
   / _ v:vector _ { return v; }
+  / _ o:object _ { return o; }
 
 atom
   = d:[0-9]+ _ { return {type: 'Literal', value: numberify(d)}; }
@@ -185,6 +214,11 @@ list
 vector
   = "[]" { return []; }
   / _ "[" _ a:atom+ _ "]" _ { return {type: 'ArrayExpression', elements: a};}
+  / _ "[" _ o:object+ _ "]" _ { return {type: 'ArrayExpression', elements: o};}
+
+object
+  = "{}" { return {type: 'ObjectExpression', properties: []}; }
+  / _ "{" _ a:atom+ _ "}" _ { return makeObject(a); }
 
 _
   = [\n, ]*
