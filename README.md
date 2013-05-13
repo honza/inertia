@@ -77,6 +77,7 @@ Standard library
 * get
 * map
 * filter
+* update (update a key in a map `(update obj key value)`
 
 **Note**: The standard library functions are modelled after Clojure.
 

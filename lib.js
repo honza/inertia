@@ -1,5 +1,19 @@
 // inertia standard library
 
+function clone(obj) {
+    if (null === obj || "object" != typeof obj) {
+        return obj;
+    }
+
+    var copy = obj.constructor();
+
+    for (var attr in obj) {
+        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+    }
+
+    return copy;
+}
+
 function nth(list, n) {
     if (list.length && list.length + 1 < n) {
         return null;
@@ -61,6 +75,13 @@ function get(obj, key) {
     }
 
     return null;
+}
+
+// update a key in a map
+function update(obj, key, value) {
+    var copy = clone(obj);
+    copy[key] = value;
+    return copy;
 }
 
 function map(fn, list) {
