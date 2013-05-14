@@ -63,6 +63,7 @@ What works
 * `(fn [] ...)`
 * `{}`, `{"name" "honza"}`
 * comments `;;`
+* `let`
 
 Standard library
 ----------------
@@ -85,7 +86,6 @@ Standard library
 TODO
 ----
 
-* `let`
 * Macro support
 
 License
