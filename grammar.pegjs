@@ -177,7 +177,7 @@
 
 
 program
-  = s:sexp+ "\n"*  { return {
+  = _ s:sexp+ "\n"*  { return {
       type: 'Program',
       body: s
     };}
@@ -240,5 +240,11 @@ object
   = "{}" { return {type: 'ObjectExpression', properties: []}; }
   / _ "{" _ a:atom+ _ "}" _ { return makeObject(a); }
 
+comment
+  = ";;" s:(!"\n" sourcechar)* "\n"
+
+__
+  = [\n, ]
+
 _
-  = [\n, ]*
+  = (__ / comment)*

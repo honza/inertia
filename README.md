@@ -62,6 +62,7 @@ What works
 * `if`
 * `(fn [] ...)`
 * `{}`, `{"name" "honza"}`
+* comments `;;`
 
 Standard library
 ----------------

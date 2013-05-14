@@ -26,6 +26,7 @@ input = fs.readFileSync(input, 'utf8');
 lib = fs.readFileSync('lib.js', 'utf8');
 
 ast = parser.parse(input);
+console.log(ast);
 
 if (program.ast) {
     console.log(JSON.stringify(ast, null, 4));
