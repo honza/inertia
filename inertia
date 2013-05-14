@@ -829,6 +829,86 @@ module.exports = (function(){
             if (result0 === null) {
               pos = pos0;
             }
+            if (result0 === null) {
+              pos0 = pos;
+              pos1 = pos;
+              result0 = parse__();
+              if (result0 !== null) {
+                if (input.charCodeAt(pos) === 91) {
+                  result1 = "[";
+                  pos++;
+                } else {
+                  result1 = null;
+                  if (reportFailures === 0) {
+                    matchFailed("\"[\"");
+                  }
+                }
+                if (result1 !== null) {
+                  result2 = parse__();
+                  if (result2 !== null) {
+                    result4 = parse_sexp();
+                    if (result4 !== null) {
+                      result3 = [];
+                      while (result4 !== null) {
+                        result3.push(result4);
+                        result4 = parse_sexp();
+                      }
+                    } else {
+                      result3 = null;
+                    }
+                    if (result3 !== null) {
+                      result4 = parse__();
+                      if (result4 !== null) {
+                        if (input.charCodeAt(pos) === 93) {
+                          result5 = "]";
+                          pos++;
+                        } else {
+                          result5 = null;
+                          if (reportFailures === 0) {
+                            matchFailed("\"]\"");
+                          }
+                        }
+                        if (result5 !== null) {
+                          result6 = parse__();
+                          if (result6 !== null) {
+                            result0 = [result0, result1, result2, result3, result4, result5, result6];
+                          } else {
+                            result0 = null;
+                            pos = pos1;
+                          }
+                        } else {
+                          result0 = null;
+                          pos = pos1;
+                        }
+                      } else {
+                        result0 = null;
+                        pos = pos1;
+                      }
+                    } else {
+                      result0 = null;
+                      pos = pos1;
+                    }
+                  } else {
+                    result0 = null;
+                    pos = pos1;
+                  }
+                } else {
+                  result0 = null;
+                  pos = pos1;
+                }
+              } else {
+                result0 = null;
+                pos = pos1;
+              }
+              if (result0 !== null) {
+                result0 = (function(offset, s) { return {
+                  type: 'ArrayExpression',
+                  elements: map(liftExpression, s)};})(pos0, result0[3]);
+              }
+              if (result0 === null) {
+                pos = pos0;
+              }
+            }
           }
         }
         return result0;
@@ -1175,6 +1255,14 @@ module.exports = (function(){
       
         }
       
+        function liftExpression(s) {
+          if (s.type === 'ExpressionStatement') {
+            return s.expression;
+          } else {
+            return s;
+          }
+        }
+      
         function genericArithmeticOperation(operator) {
             return function(s) {
                 if (s.length === 2) {
@@ -1247,8 +1335,55 @@ module.exports = (function(){
               },
               'arguments': []
             }
+          },
+          'let': function(s) {
+            var args = partition(2, first(s).elements),
+                exprs = rest(s),
+                body = [];
+      
+            body.push({
+              type: 'VariableDeclaration',
+              declarations: map(makeDec, args),
+              kind: 'var'});
+      
+            if (exprs.length > 1) {
+              var initial = init(exprs);
+              for (var i = 0; i < initial.length; i++ ) {
+                body.push(initial[i]);
+              }
+            }
+      
+            body.push({
+              type: 'ReturnStatement',
+              argument: last(exprs)[0].expression
+            });
+      
+      
+            return {
+              type: 'CallExpression',
+              callee: {
+                type: 'FunctionExpression',
+                id: null,
+                params: [],
+                body: {
+                  type: 'BlockStatement',
+                  body: body
+                }
+              },
+              'arguments': []
+            };
           }
         };
+      
+        function makeDec(p) {
+          var name = p[0], value = p[1];
+      
+          return {
+            type: 'VariableDeclarator',
+            id: name,
+            init: value.expression ? value.expression : value
+          };
+        }
       
         function numberify(n) {
           return parseInt(n.join(""), 10);

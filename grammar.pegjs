@@ -51,6 +51,14 @@
 
   }
 
+  function liftExpression(s) {
+    if (s.type === 'ExpressionStatement') {
+      return s.expression;
+    } else {
+      return s;
+    }
+  }
+
   function genericArithmeticOperation(operator) {
       return function(s) {
           if (s.length === 2) {
@@ -123,8 +131,55 @@
         },
         'arguments': []
       }
+    },
+    'let': function(s) {
+      var args = partition(2, first(s).elements),
+          exprs = rest(s),
+          body = [];
+
+      body.push({
+        type: 'VariableDeclaration',
+        declarations: map(makeDec, args),
+        kind: 'var'});
+
+      if (exprs.length > 1) {
+        var initial = init(exprs);
+        for (var i = 0; i < initial.length; i++ ) {
+          body.push(initial[i]);
+        }
+      }
+
+      body.push({
+        type: 'ReturnStatement',
+        argument: last(exprs)[0].expression
+      });
+
+
+      return {
+        type: 'CallExpression',
+        callee: {
+          type: 'FunctionExpression',
+          id: null,
+          params: [],
+          body: {
+            type: 'BlockStatement',
+            body: body
+          }
+        },
+        'arguments': []
+      };
     }
   };
+
+  function makeDec(p) {
+    var name = p[0], value = p[1];
+
+    return {
+      type: 'VariableDeclarator',
+      id: name,
+      init: value.expression ? value.expression : value
+    };
+  }
 
   function numberify(n) {
     return parseInt(n.join(""), 10);
@@ -235,6 +290,9 @@ vector
   = "[]" { return []; }
   / _ "[" _ a:atom+ _ "]" _ { return {type: 'ArrayExpression', elements: a};}
   / _ "[" _ o:object+ _ "]" _ { return {type: 'ArrayExpression', elements: o};}
+  / _ "[" _ s:sexp+ _ "]" _ { return {
+    type: 'ArrayExpression',
+    elements: map(liftExpression, s)};}
 
 object
   = "{}" { return {type: 'ObjectExpression', properties: []}; }
