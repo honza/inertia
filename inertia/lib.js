@@ -1,7 +1,15 @@
 // inertia standard library
 
 function clone(obj) {
-    if (null === obj || "object" != typeof obj) {
+    if (null === obj) {
+        return obj;
+    }
+
+    if (typeof obj === 'array') {
+        return obj.slice();
+    }
+
+    if (typeof obj !== 'object') {
         return obj;
     }
 
