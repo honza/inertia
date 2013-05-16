@@ -6,7 +6,7 @@ var util = require('util');
 var program = require('commander');
 
 program
-    .version('0.3.0')
+    .version('0.3.1')
     .usage('[options] <file...>')
     .option('-t, --ast', 'Print the AST')
     .option('-o, --output [file]', 'Redirect output to file')
