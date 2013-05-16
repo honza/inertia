@@ -1518,7 +1518,7 @@ module.exports = (function(){
   
   return result;
 })();
-var parser = require('./grammar');
+var parser = require('./inertia/grammar');
 var UglifyJS = require("uglify-js");
 var fs = require('fs');
 var es = require('escodegen');
@@ -1543,7 +1543,7 @@ var input, ast, js, lib;
 input = program.args[0];
 input = fs.readFileSync(input, 'utf8');
 
-lib = fs.readFileSync('lib.js', 'utf8');
+lib = fs.readFileSync('./inertia/lib.js', 'utf8');
 
 ast = parser.parse(input);
 

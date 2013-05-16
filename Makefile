@@ -1,10 +1,10 @@
-NAME=inertia
+NAME=inertiac
 
 all:
-	./node_modules/.bin/pegjs grammar.pegjs
+	./node_modules/.bin/pegjs inertia/grammar.pegjs
 	rm $(NAME)
 	echo "#!/usr/bin/env node" > $(NAME)
-	cat grammar.js main.js >> $(NAME)
+	cat inertia/grammar.js inertia/main.js >> $(NAME)
 	chmod +x $(NAME)
 
 install:
