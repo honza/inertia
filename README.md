@@ -7,6 +7,9 @@ A LISP to Javascript compiler.
 
 *a learning exercise*
 
+Read the [accompanying blog post][4].
+
+
 How it works
 ------------
 
@@ -101,3 +104,4 @@ All feedback is most welcome.  Open an issue for any purpose.
 [1]: http://pegjs.majda.cz/
 [2]: https://developer.mozilla.org/en-US/docs/SpiderMonkey/Parser_API
 [3]: https://github.com/Constellation/escodegen
+[4]: http://honza.ca/2013/05/building-a-lisp-to-javascript-compiler
