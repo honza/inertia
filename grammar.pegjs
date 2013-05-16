@@ -287,7 +287,7 @@ list
   }
 
 vector
-  = "[]" { return []; }
+  = "[]" { return {type: 'ArrayExpression', elements: []};}
   / _ "[" _ a:atom+ _ "]" _ { return {type: 'ArrayExpression', elements: a};}
   / _ "[" _ o:object+ _ "]" _ { return {type: 'ArrayExpression', elements: o};}
   / _ "[" _ s:sexp+ _ "]" _ { return {

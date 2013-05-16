@@ -670,7 +670,7 @@ module.exports = (function(){
           }
         }
         if (result0 !== null) {
-          result0 = (function(offset) { return []; })(pos0);
+          result0 = (function(offset) { return {type: 'ArrayExpression', elements: []};})(pos0);
         }
         if (result0 === null) {
           pos = pos0;
@@ -1526,7 +1526,7 @@ var util = require('util');
 var program = require('commander');
 
 program
-    .version('0.2.0')
+    .version('0.3.0')
     .usage('[options] <file...>')
     .option('-t, --ast', 'Print the AST')
     .option('-o, --output [file]', 'Redirect output to file')
@@ -1546,7 +1546,6 @@ input = fs.readFileSync(input, 'utf8');
 lib = fs.readFileSync('lib.js', 'utf8');
 
 ast = parser.parse(input);
-console.log(ast);
 
 if (program.ast) {
     console.log(JSON.stringify(ast, null, 4));

@@ -669,7 +669,7 @@ module.exports = (function(){
           }
         }
         if (result0 !== null) {
-          result0 = (function(offset) { return []; })(pos0);
+          result0 = (function(offset) { return {type: 'ArrayExpression', elements: []};})(pos0);
         }
         if (result0 === null) {
           pos = pos0;
