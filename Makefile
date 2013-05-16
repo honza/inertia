@@ -15,3 +15,4 @@ clean:
 
 example:
 	./$(NAME) -o examples/simple.js examples/simple.clj
+	./$(NAME) -o examples/arrays.js examples/arrays.clj

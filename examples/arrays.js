@@ -4,7 +4,7 @@ function clone(obj) {
     if (null === obj) {
         return obj;
     }
-
+    
     if (typeof obj === 'array') {
         return obj.slice();
     }
@@ -12,7 +12,7 @@ function clone(obj) {
     if (typeof obj !== 'object') {
         return obj;
     }
-
+    
     var copy = obj.constructor();
 
     for (var attr in obj) {
@@ -105,8 +105,15 @@ function filter(fn, list) {
 
 
 
-var greet = function (name) {
-    return console.log('hey', name);
-};
-var user = 'honza';
-greet(user);
+var a = [
+        1,
+        2,
+        3
+    ];
+console.log(conj(a, 4));
+console.log(cons(0, a));
+console.log(a);
+console.log(take(2, a));
+console.log(count(a));
+console.log(first(a));
+console.log(partition(2, conj(a, 4)));
