@@ -56,6 +56,19 @@ Usage
         -o, --output [file]  Redirect output to file
         -c, --compress       Minify with uglify
 
+You can use the Makefile to install the dependencies:
+
+    $ make install
+
+Or to build the compiler:
+
+    $ make
+
+Or to build all the examples:
+
+    $ make example
+
+
 What works
 ----------
 

@@ -1,6 +1,6 @@
 NAME=inertia
 
-build:
+all:
 	./node_modules/.bin/pegjs grammar.pegjs
 	rm $(NAME)
 	echo "#!/usr/bin/env node" > $(NAME)
@@ -12,3 +12,6 @@ install:
 
 clean:
 	rm grammar.js out.js $(NAME)
+
+example:
+	./$(NAME) -o examples/simple.js examples/simple.clj
