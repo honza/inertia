@@ -9,3 +9,9 @@
 (console.log (first a))  ;; 1
 
 (console.log (partition 2 (conj a 4))) ;; [ [1, 2], [3, 4] ]
+
+(def inc
+  (fn [x]
+    (+ x 1)))
+
+(console.log (map inc a)) ;; [2, 3, 4]

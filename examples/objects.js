@@ -105,19 +105,10 @@ function filter(fn, list) {
 
 
 
-var a = [
-        1,
-        2,
-        3
-    ];
-console.log(conj(a, 4));
-console.log(cons(0, a));
-console.log(a);
-console.log(take(2, a));
-console.log(count(a));
-console.log(first(a));
-console.log(partition(2, conj(a, 4)));
-var inc = function (x) {
-    return x + 1;
-};
-console.log(map(inc, a));
+var user = {
+        'name': 'honza',
+        'age': 24
+    };
+console.log(get(user, 'name'));
+console.log(update(user, 'name', 'nobody'));
+console.log(user);
