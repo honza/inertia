@@ -114,8 +114,6 @@ function join(a, b) {
 
 
 
-var greet = function (name) {
-    return console.log('hey', name);
-};
-var user = 'honza';
-greet(user);
+var str = require('./str');
+var thing_to_shout = 'hello';
+console.log(str.shout(thing_to_shout));

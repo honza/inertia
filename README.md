@@ -95,14 +95,33 @@ Standard library
 * get
 * map
 * filter
-* update (update a key in a map `(update obj key value)`
+* update (update a key in a map `(update obj key value)`)
 
 **Note**: The standard library functions are modelled after Clojure.
+
+### `join`
+
+join two strings
+
+### `expose`
+
+export a name in a module
+
+```clojure
+(expose "name" name)
+```
+
+will compile to
+
+```js
+module.exports['name'] = name;
+```
 
 TODO
 ----
 
 * Macro support
+* Lisp case variable names (e.g. `my-name`)
 
 License
 -------

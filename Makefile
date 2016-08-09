@@ -17,3 +17,5 @@ example:
 	./$(NAME) -o examples/simple.js examples/simple.clj
 	./$(NAME) -o examples/arrays.js examples/arrays.clj
 	./$(NAME) -o examples/objects.js examples/objects.clj
+	./$(NAME) -o examples/str/index.js examples/str/index.clj
+	./$(NAME) -o examples/usemodule.js examples/usemodule.clj

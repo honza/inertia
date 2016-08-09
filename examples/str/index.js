@@ -114,8 +114,7 @@ function join(a, b) {
 
 
 
-var greet = function (name) {
-    return console.log('hey', name);
+var shout = function (s) {
+    return join(s, '!!!');
 };
-var user = 'honza';
-greet(user);
+expose('shout', shout);

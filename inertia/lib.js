@@ -100,6 +100,15 @@ function filter(fn, list) {
     return list.filter(fn);
 }
 
+function expose(key, value) {
+  module.exports[key] = value;
+}
+
+// join two strings
+function join(a, b) {
+  return a + b;
+}
+
 
 // inertia standard library end
 

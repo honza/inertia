@@ -101,12 +101,7 @@ function filter(fn, list) {
 }
 
 function expose(key, value) {
-  module.exports[key] = value;
-}
-
-// join two strings
-function join(a, b) {
-  return a + b;
+  module.export[key] = value;
 }
 
 
@@ -114,8 +109,5 @@ function join(a, b) {
 
 
 
-var greet = function (name) {
-    return console.log('hey', name);
-};
-var user = 'honza';
-greet(user);
+defn(split, [s], s);
+export('split', split);
