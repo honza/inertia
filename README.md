@@ -1,6 +1,8 @@
 inertia
 =======
 
+[![Build Status](https://travis-ci.org/honza/inertia.svg?branch=master)](https://travis-ci.org/honza/inertia)
+
 A LISP to Javascript compiler.
 
 *work in progress*

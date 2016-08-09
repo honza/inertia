@@ -10,5 +10,8 @@
   },
   "author": "Honza Pokorny",
   "repository": "https://github.com/honza/inertia",
-  "license": "BSD-2-Clause"
+  "license": "BSD-2-Clause",
+  "scripts": {
+    "test": "./run-tests.sh"
+  }
 }
