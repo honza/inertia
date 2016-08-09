@@ -106,9 +106,9 @@ function filter(fn, list) {
 
 
 var user = {
-        'name': 'honza',
-        'age': 24
-    };
+    'name': 'honza',
+    'age': 24
+};
 console.log(get(user, 'name'));
 console.log(update(user, 'name', 'nobody'));
 console.log(user);

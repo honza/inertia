@@ -106,10 +106,10 @@ function filter(fn, list) {
 
 
 var a = [
-        1,
-        2,
-        3
-    ];
+    1,
+    2,
+    3
+];
 console.log(conj(a, 4));
 console.log(cons(0, a));
 console.log(a);
