@@ -121,7 +121,6 @@ TODO
 ----
 
 * Macro support
-* Lisp case variable names (e.g. `my-name`)
 
 License
 -------

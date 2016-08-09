@@ -54,7 +54,7 @@ module.exports = (function() {
         peg$c12 = function(d) { return {type: 'Literal', value: makeStr(d) }},
         peg$c13 = /^[\-+\/*_<>=a-zA-Z.!]/,
         peg$c14 = { type: "class", value: "[-+/*_<>=a-zA-Z\\.!]", description: "[-+/*_<>=a-zA-Z\\.!]" },
-        peg$c15 = function(s) { return {type: 'Identifier', name: s.join("")};},
+        peg$c15 = function(s) { return {type: 'Identifier', name: makeIdent(s)};},
         peg$c16 = { type: "any", description: "any character" },
         peg$c17 = "()",
         peg$c18 = { type: "literal", value: "()", description: "\"()\"" },
@@ -1402,6 +1402,16 @@ module.exports = (function() {
       function makeStr(n) {
         return map(function(i) {
           return i[1];
+        }, n).join("");
+      }
+
+      function makeIdent(n) {
+        return map(function(i) {
+          var c = i.toLowerCase();
+          if (c === '-') {
+            c = '_';
+          }
+          return c;
         }, n).join("");
       }
 

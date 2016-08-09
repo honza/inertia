@@ -199,6 +199,16 @@
     }, n).join("");
   }
 
+  function makeIdent(n) {
+    return map(function(i) {
+      var c = i.toLowerCase();
+      if (c === '-') {
+        c = '_';
+      }
+      return c;
+    }, n).join("");
+  }
+
   function rest(a) {
     return a.slice(1);
   }
@@ -246,7 +256,7 @@ sexp
 atom
   = d:[0-9]+ _ { return {type: 'Literal', value: numberify(d)}; }
   / '"' d:(!'"' sourcechar)* '"' _ { return {type: 'Literal', value: makeStr(d) }}
-  / s:[-+/*_<>=a-zA-Z\.!]+ _ { return {type: 'Identifier', name: s.join("")};}
+  / s:[-+/*_<>=a-zA-Z\.!]+ _ { return {type: 'Identifier', name: makeIdent(s)};}
 
 sourcechar
   = .

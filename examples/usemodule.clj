@@ -1,6 +1,6 @@
 (def str (require "./str"))
 
-(def thing_to_shout "hello")
+(def thing-to-shout "hello")
 
 (console.log
- (str.shout thing_to_shout))
+ (str.shout thing-to-shout))
